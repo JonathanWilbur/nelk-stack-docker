@@ -1,0 +1,76 @@
+version: '3.3'
+
+networks:
+
+  elk:
+    external: 'false'
+
+services:
+
+  # See: https://www.elastic.co/guide/en/elasticsearch/reference/6.4/docker.html.
+  elasticsearch:
+    container_name: 'elk-elasticsearch'
+    hostname: 'eshost'
+    image: 'elasticsearch:6.5.1'
+    networks:
+      - 'elk'
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+    volumes:
+      # - './configuration/elasticsearch/config.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro'
+      - './data/elasticsearch/data:/usr/share/elasticsearch/data'
+      - './data/elasticsearch/logs:/usr/share/elasticsearch/logs'
+
+  # See: https://www.elastic.co/guide/en/kibana/current/docker.html.
+  kibana:
+    container_name: 'elk-kibana'
+    depends_on:
+      - 'elasticsearch'
+    # See: https://www.elastic.co/guide/en/kibana/current/settings.html.
+    environment:
+      SERVER_NAME: 'kibana.example.org'
+      SERVER_PORT: '5601'
+      ELASTICSEARCH_URL: 'http://elasticsearch:9200'
+    hostname: 'kibanahost'
+    image: 'kibana:6.5.1'
+    networks:
+      - 'elk'
+    ports:
+      - '5601:5601'
+    # volumes:
+    #   - './configuration/kibana/config.yml:/usr/share/kibana/config/kibana.yml:ro'
+
+  # See: https://www.elastic.co/guide/en/logstash/current/docker-config.html.
+  logstash:
+    container_name: 'elk-logstash'
+    depends_on:
+      - 'elasticsearch'
+    hostname: 'logstashhost'
+    image: 'logstash:6.5.1'
+    networks:
+      - 'elk'
+    ports:
+      - '8888:8888'
+    volumes:
+      - './configuration/logstash/config.yml:/usr/share/logstash/config/logstash.yml:ro'
+      - './configuration/logstash/pipeline:/usr/share/logstash/pipeline:ro'
+
+  nginx:
+    container_name: 'elk-nginx'
+    depends_on:
+      - 'kibana'
+    hostname: 'nginxhost'
+    image: 'nginx:latest'
+    networks:
+      - 'elk'
+    ports:
+      # - '8080:80'
+      - '4443:443'
+    volumes:
+      - './configuration/nginx/nginx.conf:/etc/nginx/nginx.conf:ro'
+      - './configuration/nginx/cert.pem:/cert.pem:ro'
+      - './configuration/nginx/key.pem:/key.pem:ro'
+      - './configuration/nginx/htpasswd:/.htpasswd:ro'
+
+
