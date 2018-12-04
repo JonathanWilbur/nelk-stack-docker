@@ -45,21 +45,9 @@ and edit the configuration files in `./configuration/curator/`.
 
 ## ToDo
 
-- [x] Curator
-- [x] HealthCheck
 - [ ] LetsEncrypt (Pending experimentation)
 - [ ] Kubernetes Equivalent
 - [ ] Docker Swarm Equivalent
-- [x] Restart Rules
-- [x] Capability Dropping
-- [x] Put LogStash and ElasticSearch on a separate network
-- [x] Use `configs` instead of volumes where appropriate
-- [x] Add `dns_search`
-- [x] Use `init: false` in each service, just to be explicit
-- [x] Add `labels`
-- [x] Add explicit `/tcp` to published ports
-- [x] Use Alpine Nginx Image
-- [ ] Add Production SysCtl requirements for ElasticSearch
 
 ## Privacy
 

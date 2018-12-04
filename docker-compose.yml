@@ -75,6 +75,14 @@ services:
     #   - '9200:9200/tcp'
     #   - '9300:9300/tcp'
     restart: 'always'
+    # See: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html.
+    # sysctls:
+    #   vm.max_map_count: 262144
+    # See: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html.
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     volumes:
       - './configuration/elasticsearch/config.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro'
       - './data/elasticsearch/data:/usr/share/elasticsearch/data'
