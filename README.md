@@ -49,14 +49,14 @@ and edit the configuration files in `./configuration/curator/`.
 - [ ] Kubernetes Equivalent
 - [ ] Docker Swarm Equivalent
 - [x] Restart Rules
-- [ ] Capability Dropping
+- [x] Capability Dropping
 - [x] Put LogStash and ElasticSearch on a separate network
 - [ ] Use `configs` instead of volumes where appropriate
-- [ ] Add `deploy` configuration?
 - [ ] Add `dns_search` (if a `DOMAIN` environment variable can be used effectively)
 - [x] Use `init: false` in each service, just to be explicit
 - [x] Add `labels`
 - [x] Add explicit `/tcp` to published ports
+- [x] Use Alpine Nginx Image
 - [ ] Add Production SysCtl requirements for ElasticSearch
 
 ## Privacy

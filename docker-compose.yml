@@ -143,11 +143,19 @@ services:
       - './data/logstash/logs:/usr/share/logstash/logs'
 
   nginx:
+    # Thank you, coldfix: https://stackoverflow.com/questions/43467670/which-capabilities-can-i-drop-in-a-docker-nginx-container
+    cap_add:
+      - 'CHOWN'
+      - 'DAC_OVERRIDE'
+      - 'SETGID'
+      - 'SETUID'
+    cap_drop:
+      - 'ALL'
     container_name: 'elk-nginx'
     depends_on:
       - 'kibana'
     hostname: 'nginxhost'
-    image: 'nginx:latest'
+    image: 'nginx:alpine'
     init: false
     labels:
       github: 'https://github.com/nginx/nginx'
@@ -156,7 +164,7 @@ services:
       - 'proxying'
     ports:
       # - '8080:80/tcp'
-      - '4443:443/tcp'
+      - '4443:4443/tcp'
     restart: 'unless-stopped'
     volumes:
       - './configuration/nginx/nginx.conf:/etc/nginx/nginx.conf:ro'

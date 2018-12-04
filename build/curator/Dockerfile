@@ -15,4 +15,7 @@ RUN echo 'LC_ALL=en_US.UTF-8' >> /etc/crontab
 # This cron line means "run at 03:30 every day."
 RUN echo '30 3 * * * nobody /usr/bin/curator --config /config.yml /actions.yml' >> /etc/crontab
 
+# Uncomment this line for testing purposes:
+# RUN echo '* * * * * nobody /usr/bin/curator --config /config.yml /actions.yml' >> /etc/crontab
+
 CMD /usr/sbin/crond -n
