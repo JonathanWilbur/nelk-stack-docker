@@ -6,8 +6,17 @@
 
 Nginx, ElasticSearch, LogStash, and Kibana (NELK) in a Docker-Compose App.
 
-This one proxies behind Nginx and uses HTTP Basic Authentication by default, so
-you can expose this to the public Internet safely.
+This one proxies Kibana behind Nginx and uses HTTP Basic Authentication over
+TLS, so you can expose Kibana to the public Internet safely, after using valid
+TLS certificates and changing the credentials (described below).
+
+**WARNING: LogStash is NOT proxied, and therefore not secured with TLS, nor protected by a password. It will be exposed to the public Internet if you run this on a connected host that is not behind a network-based firewall.**
+
+## Usage
+
+Run `docker-compose up`, and give it a minute or two to build and boot.
+
+Log into Kibana via `https://localhost:4443/`.
 
 The default credentials are:
 
@@ -24,12 +33,22 @@ printf "USER:$(openssl passwd -crypt PASSWORD)\n"
 You should also generate a valid key-certificate pair in `./configuration/nginx`,
 but I'm not your mother.
 
+## Curator
+
+This stack also comes with [Curator](https://github.com/elastic/curator) almost
+ready to go. To use it, simply uncomment it from the `docker-compose.yml` file
+and edit the configuration files in `./configuration/curator/`.
+
+**WARNING: Curator is literally a tool for deleting old ElasticSearch entries. If you misconfigure it, you could delete wanted data.**
+
 ## ToDo
 
-- [ ] ~~APM Server~~ _Not applicable._
-- [ ] Curator `bobrik/curator`
-- [ ] ~~LogSpout~~ _Not applicable._
+- [x] Curator
 - [x] HealthCheck
+- [ ] LetsEncrypt `jrcs/letsencrypt-nginx-proxy-companion`
+- [ ] Kubernetes Equivalent
+- [ ] Restart Rules
+- [ ] Capability Dropping
 
 ## Privacy
 

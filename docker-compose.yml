@@ -7,6 +7,18 @@ networks:
 
 services:
 
+  # curator:
+  #   build: './build/curator'
+  #   container_name: 'elk-curator'
+  #   depends_on:
+  #     - 'elasticsearch'
+  #   hostname: 'curatorhost'
+  #   networks:
+  #     - 'elk'
+  #   volumes:
+  #     - './configuration/curator/actions.yml:/actions.yml:ro'
+  #     - './configuration/curator/config.yml:/config.yml:ro'
+
   # See: https://www.elastic.co/guide/en/elasticsearch/reference/6.4/docker.html.
   elasticsearch:
     container_name: 'elk-elasticsearch'
@@ -20,9 +32,9 @@ services:
     image: 'elasticsearch:6.5.1'
     networks:
       - 'elk'
-    ports:
-      - '9200:9200'
-      - '9300:9300'
+    # ports:
+    #   - '9200:9200'
+    #   - '9300:9300'
     volumes:
       - './configuration/elasticsearch/config.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro'
       - './data/elasticsearch/data:/usr/share/elasticsearch/data'
@@ -48,8 +60,8 @@ services:
     image: 'kibana:6.5.1'
     networks:
       - 'elk'
-    ports:
-      - '5601:5601'
+    # ports:
+    #   - '5601:5601'
     volumes:
       - './configuration/kibana/config.yml:/usr/share/kibana/config/kibana.yml:ro'
 
