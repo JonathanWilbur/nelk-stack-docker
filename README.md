@@ -50,13 +50,13 @@ and edit the configuration files in `./configuration/curator/`.
 - [ ] Docker Swarm Equivalent
 - [x] Restart Rules
 - [ ] Capability Dropping
-- [ ] Put LogStash and ElasticSearch on a separate network
+- [x] Put LogStash and ElasticSearch on a separate network
 - [ ] Use `configs` instead of volumes where appropriate
 - [ ] Add `deploy` configuration?
 - [ ] Add `dns_search` (if a `DOMAIN` environment variable can be used effectively)
-- [ ] Use `init: false` in each service, just to be explicit
-- [ ] Add `labels`
-- [ ] Add explicit `/tcp` to published ports
+- [x] Use `init: false` in each service, just to be explicit
+- [x] Add `labels`
+- [x] Add explicit `/tcp` to published ports
 - [ ] Add Production SysCtl requirements for ElasticSearch
 
 ## Privacy
