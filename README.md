@@ -33,6 +33,8 @@ printf "USER:$(openssl passwd -crypt PASSWORD)\n"
 You should also generate a valid key-certificate pair in `./configuration/nginx`,
 but I'm not your mother.
 
+Finally, set the domain in `.env`, if you please. It is not mandatory.
+
 ## Curator
 
 This stack also comes with [Curator](https://github.com/elastic/curator) almost
@@ -51,8 +53,8 @@ and edit the configuration files in `./configuration/curator/`.
 - [x] Restart Rules
 - [x] Capability Dropping
 - [x] Put LogStash and ElasticSearch on a separate network
-- [ ] Use `configs` instead of volumes where appropriate
-- [ ] Add `dns_search` (if a `DOMAIN` environment variable can be used effectively)
+- [x] Use `configs` instead of volumes where appropriate
+- [x] Add `dns_search`
 - [x] Use `init: false` in each service, just to be explicit
 - [x] Add `labels`
 - [x] Add explicit `/tcp` to published ports

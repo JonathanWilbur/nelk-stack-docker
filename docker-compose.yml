@@ -1,5 +1,27 @@
 version: '3.7'
 
+configs:
+  curator_actions:
+    file: './configuration/curator/actions.yml'
+  curator_config:
+    file: './configuration/curator/config.yml'
+  elasticsearch_config:
+    file: './configuration/elasticsearch/config.yml'
+  kibana_config:
+    file: './configuration/kibana/config.yml'
+  logstash_config:
+    file: './configuration/logstash/config.yml'
+  logstash_pipeline:
+    file: './configuration/logstash/pipeline'
+  nginx_conf:
+    file: './configuration/nginx/nginx.conf'
+  tls_cert:
+    file: './configuration/nginx/cert.pem'
+  tls_key:
+    file: './configuration/nginx/key.pem'
+  nginx_htpasswd:
+    file: './configuration/nginx/htpasswd'
+
 networks:
 
   curating:
@@ -32,6 +54,7 @@ services:
   # See: https://www.elastic.co/guide/en/elasticsearch/reference/6.4/docker.html.
   elasticsearch:
     container_name: 'elk-elasticsearch'
+    dns_search: "${DOMAIN}"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:9200" ]
       interval: '1m'
@@ -62,6 +85,7 @@ services:
     container_name: 'elk-kibana'
     depends_on:
       - 'elasticsearch'
+    dns_search: "${DOMAIN}"
     # See: https://www.elastic.co/guide/en/kibana/current/settings.html.
     environment:
       SERVER_NAME: 'kibana.example.org'
@@ -93,6 +117,7 @@ services:
   #   cap_add:
   #     - 'NET_ADMIN'
   #   container_name: 'letsencrypt'
+  #   dns_search: "${DOMAIN}"
   #   environment:
   #     PGID: '1000'
   #     PUID: '1000'
@@ -119,6 +144,7 @@ services:
     container_name: 'elk-logstash'
     depends_on:
       - 'elasticsearch'
+    dns_search: "${DOMAIN}"
     # This uses the monitoring API: https://www.elastic.co/guide/en/logstash/current/monitoring.html
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:9600" ]
@@ -154,6 +180,7 @@ services:
     container_name: 'elk-nginx'
     depends_on:
       - 'kibana'
+    dns_search: "${DOMAIN}"
     hostname: 'nginxhost'
     image: 'nginx:alpine'
     init: false
