@@ -84,7 +84,7 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - './configuration/elasticsearch/config.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro'
+      - "$PWD/configuration/elasticsearch/config.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro"
       - './data/elasticsearch/data:/usr/share/elasticsearch/data'
       - './data/elasticsearch/logs:/usr/share/elasticsearch/logs'
 
@@ -118,7 +118,7 @@ services:
     #   - '5601:5601/tcp'
     restart: 'unless-stopped'
     volumes:
-      - './configuration/kibana/config.yml:/usr/share/kibana/config/kibana.yml:ro'
+      - "$PWD/configuration/kibana/config.yml:/usr/share/kibana/config/kibana.yml:ro"
 
   # Currently experimental. Uncomment at your peril.
   # letsencrypt:
@@ -172,7 +172,7 @@ services:
       - '8888:8888/tcp'
     restart: 'unless-stopped'
     volumes:
-      - './configuration/logstash/config.yml:/usr/share/logstash/config/logstash.yml:ro'
+      - "$PWD/configuration/logstash/config.yml:/usr/share/logstash/config/logstash.yml:ro"
       - './configuration/logstash/pipeline:/usr/share/logstash/pipeline:ro'
       - './data/logstash/logs:/usr/share/logstash/logs'
 
@@ -202,7 +202,7 @@ services:
       - '4443:4443/tcp'
     restart: 'unless-stopped'
     volumes:
-      - './configuration/nginx/nginx.conf:/etc/nginx/nginx.conf:ro'
-      - './configuration/nginx/cert.pem:/cert.pem:ro'
-      - './configuration/nginx/key.pem:/key.pem:ro'
-      - './configuration/nginx/htpasswd:/.htpasswd:ro'
+      - "$PWD/configuration/nginx/nginx.conf:/etc/nginx/nginx.conf:ro"
+      - "$PWD/configuration/nginx/cert.pem:/cert.pem:ro"
+      - "$PWD/configuration/nginx/key.pem:/key.pem:ro"
+      - "$PWD/configuration/nginx/htpasswd:/.htpasswd:ro"
