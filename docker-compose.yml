@@ -1,5 +1,6 @@
 version: '3.7'
 
+# This section was kept around for easy deployment to Docker Swarm.
 configs:
   curator_actions:
     file: './configuration/curator/actions.yml'
@@ -23,7 +24,6 @@ configs:
     file: './configuration/nginx/htpasswd'
 
 networks:
-
   curating:
     external: false
   logstashing:

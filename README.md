@@ -45,6 +45,9 @@ and edit the configuration files in `./configuration/curator/`.
 
 ## ToDo
 
+- [ ] Fix `.gitignore`
+- [ ] Fix `$PWD` volume-mounting issue
+- [ ] Experiment with Nginx LDAP Authentication
 - [ ] LetsEncrypt (Pending experimentation)
 - [ ] Kubernetes Equivalent
 - [ ] Docker Swarm Equivalent
