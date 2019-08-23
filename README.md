@@ -14,6 +14,9 @@ TLS certificates and changing the credentials (described below).
 
 ## Usage
 
+On Windows, you have to set the `PWD` environment variable. From PowerShell,
+run `$env:PWD=$PWD` prior to starting the stack.
+
 Run `docker-compose up`, and give it a minute or two to build and boot.
 
 Log into Kibana via `https://localhost:4443/`.
@@ -21,7 +24,7 @@ Log into Kibana via `https://localhost:4443/`.
 The default credentials are:
 
 - Username: `squishy`
-- Password: `30z0dtu8`
+- Password: `L+ZyfiS6`
 
 In production, delete these credentials from `./data/nginx/htpasswd`. Generate
 new ones using this command:
@@ -42,6 +45,16 @@ ready to go. To use it, simply uncomment it from the `docker-compose.yml` file
 and edit the configuration files in `./configuration/curator/`.
 
 **WARNING: Curator is literally a tool for deleting old ElasticSearch entries. If you misconfigure it, you could delete wanted data.**
+
+## Troubleshooting
+
+- On Windows, you have to set the `PWD` environment variable. From PowerShell,
+  run `$env:PWD=$PWD`.
+- If you are running this on a Windows machine, know that Hyper-V, which Docker
+  uses, reserves large ranges of TCP ports, even when they are not in use. If
+  you are finding that a container will anomalously not start because it cannot
+  bind on a specific TCP port, even though nothing is listening on it, this may
+  be the culprit. See [this GitHub issue](https://github.com/docker/for-win/issues/3171).
 
 ## ToDo
 

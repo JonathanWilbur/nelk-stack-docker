@@ -2,10 +2,10 @@ version: '3.7'
 
 # This section was kept around for easy deployment to Docker Swarm.
 configs:
-  curator_actions:
-    file: './configuration/curator/actions.yml'
-  curator_config:
-    file: './configuration/curator/config.yml'
+  # curator_actions:
+  #   file: './configuration/curator/actions.yml'
+  # curator_config:
+  #   file: './configuration/curator/config.yml'
   elasticsearch_config:
     file: './configuration/elasticsearch/config.yml'
   kibana_config:
@@ -24,8 +24,8 @@ configs:
     file: './configuration/nginx/htpasswd'
 
 networks:
-  curating:
-    external: false
+  # curating:
+  #   external: false
   logstashing:
     external: false
   kibana:
@@ -55,6 +55,10 @@ services:
   elasticsearch:
     container_name: 'elk-elasticsearch'
     dns_search: "${DOMAIN}"
+    environment:
+      # For some reason, ES expects lowercase dot-delimited environment vars.
+      discovery.type: 'single-node'
+      network.host: '0.0.0.0'
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:9200" ]
       interval: '1m'
@@ -62,13 +66,13 @@ services:
       retries: 3
       start_period: '1m'
     hostname: 'eshost'
-    image: 'elasticsearch:6.5.1'
+    image: 'elasticsearch:7.3.1'
     init: false
     labels:
       github: 'https://github.com/elastic/elasticsearch'
       homepage: 'https://www.elastic.co/products/elasticsearch'
     networks:
-      - 'curating'
+      # - 'curating'
       - 'logstashing'
       - 'kibana'
     # ports:
@@ -84,7 +88,6 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - "$PWD/configuration/elasticsearch/config.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro"
       - './data/elasticsearch/data:/usr/share/elasticsearch/data'
       - './data/elasticsearch/logs:/usr/share/elasticsearch/logs'
 
@@ -98,7 +101,7 @@ services:
     environment:
       SERVER_NAME: 'kibana.example.org'
       SERVER_PORT: '5601'
-      ELASTICSEARCH_URL: 'http://elasticsearch:9200'
+      ELASTICSEARCH_HOSTS: 'http://elasticsearch:9200'
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:5601" ]
       interval: '1m'
@@ -106,7 +109,7 @@ services:
       retries: 3
       start_period: '1m'
     hostname: 'kibanahost'
-    image: 'kibana:6.5.1'
+    image: 'kibana:7.3.1'
     init: false
     labels:
       github: 'https://github.com/elastic/kibana'
@@ -117,8 +120,6 @@ services:
     # ports:
     #   - '5601:5601/tcp'
     restart: 'unless-stopped'
-    volumes:
-      - "$PWD/configuration/kibana/config.yml:/usr/share/kibana/config/kibana.yml:ro"
 
   # Currently experimental. Uncomment at your peril.
   # letsencrypt:
@@ -154,6 +155,10 @@ services:
       - 'elasticsearch'
     dns_search: "${DOMAIN}"
     # This uses the monitoring API: https://www.elastic.co/guide/en/logstash/current/monitoring.html
+    environment:
+    #   NETWORK_HOST: '0.0.0.0'
+      HTTP_HOST: '0.0.0.0'
+      LOG_FORMAT: 'plain'
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:9600" ]
       interval: '1m'
@@ -161,7 +166,7 @@ services:
       retries: 3
       start_period: '1m'
     hostname: 'logstashhost'
-    image: 'logstash:6.5.1'
+    image: 'logstash:7.3.1'
     init: false
     labels:
       github: 'https://github.com/elastic/logstash'
@@ -172,7 +177,6 @@ services:
       - '8888:8888/tcp'
     restart: 'unless-stopped'
     volumes:
-      - "$PWD/configuration/logstash/config.yml:/usr/share/logstash/config/logstash.yml:ro"
       - './configuration/logstash/pipeline:/usr/share/logstash/pipeline:ro'
       - './data/logstash/logs:/usr/share/logstash/logs'
 
